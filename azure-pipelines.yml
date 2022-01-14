@@ -5,6 +5,14 @@ variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
 
+schedules:
+  - cron: '0 3 * * *'
+    displayName: "Deploy to Test Environment everyday at 3:00 AM"
+    branches:
+      include:
+      - release
+    always: false  
+
 stages:
 - stage: 'Build'
   displayName: 'Build the web application'
@@ -94,3 +102,28 @@ stages:
               azureSubscription: 'Resource Manager - Tailspin - Space Game -Dev'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+
+- stage: 'Test'
+  displayName: 'Deploy to de Test Environment'
+  dependsOn: Dev
+ # condition: and(succeeded(),eq(variables['Build.SourceBranchName'],variables['releaseBranchName']))
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: test
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'Resource Manager - Tailspin - Space Game -Test'
+              appName: '$(WebAppNameTest)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+    
