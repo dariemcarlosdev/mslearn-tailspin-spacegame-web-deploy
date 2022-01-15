@@ -1,4 +1,3 @@
-
 [![Build Status](https://dev.azure.com/DCMORA/Space%20Game%20-%20web%20-%20Multistage/_apis/build/status/mslearn-tailspin-spacegame-web-deploy?branchName=release)](https://dev.azure.com/DCMORA/Space%20Game%20-%20web%20-%20Multistage/_build/latest?definitionId=19&branchName=release)
 
 # Contributing
