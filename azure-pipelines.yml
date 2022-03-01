@@ -86,9 +86,6 @@ stages:
       succeeded(),
       eq(variables['Build.SourceBranchName'],variables['releaseBranchName'])
     )
-
-  displayName: 'Deploy to the dev environment'
-  dependsOn: Build
   jobs:
   - deployment: Deploy
     pool:
