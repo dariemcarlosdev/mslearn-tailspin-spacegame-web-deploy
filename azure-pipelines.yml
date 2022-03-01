@@ -3,7 +3,6 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-<<<<<<< HEAD
   releaseBranchName: 'release'
 
 schedules:
@@ -13,8 +12,6 @@ schedules:
       include:
       - release
     always: false  
-=======
->>>>>>> origin/release
 
 stages:
 - stage: 'Build'
@@ -78,8 +75,6 @@ stages:
       artifact: drop
 
 - stage: 'Dev'
-<<<<<<< HEAD
-  displayName: 'Deploy to de Dev Environment'
   dependsOn: Build
   condition: |
     and
@@ -87,15 +82,7 @@ stages:
       succeeded(),
       eq(variables['Build.SourceBranchName'],variables['releaseBranchName'])
     )
-=======
-  displayName: 'Deploy to the dev environment'
-  dependsOn: Build
->>>>>>> origin/release
   jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: dev
     variables:
     - group: Release
     strategy:
@@ -107,34 +94,20 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
-<<<<<<< HEAD
               azureSubscription: 'Resource Manager - Tailspin - Space Game - dev'
-=======
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
->>>>>>> origin/release
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
 - stage: 'Test'
-<<<<<<< HEAD
-  displayName: 'Deploy to de Test Environment'
-  dependsOn: Dev
- # condition: and(succeeded(),eq(variables['Build.Reason'],'Schedule']))
-=======
   displayName: 'Deploy to the test environment'
   dependsOn: Dev
->>>>>>> origin/release
   jobs:
   - deployment: Deploy
     pool:
       vmImage: 'ubuntu-20.04'
     environment: test
     variables:
-<<<<<<< HEAD
-    - group: Release
-=======
     - group: 'Release'
->>>>>>> origin/release
     strategy:
       runOnce:
         deploy:
@@ -144,20 +117,12 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
-<<<<<<< HEAD
               azureSubscription: 'Resource Manager - Tailspin - Space Game - test'
-=======
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
->>>>>>> origin/release
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
 - stage: 'Staging'
-<<<<<<< HEAD
   displayName: 'Deploy to de Staging Environment'
-=======
-  displayName: 'Deploy to the staging environment'
->>>>>>> origin/release
   dependsOn: Test
   jobs:
   - deployment: Deploy
@@ -165,11 +130,7 @@ stages:
       vmImage: 'ubuntu-20.04'
     environment: staging
     variables:
-<<<<<<< HEAD
     - group: Release
-=======
-    - group: 'Release'
->>>>>>> origin/release
     strategy:
       runOnce:
         deploy:
@@ -179,13 +140,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
-<<<<<<< HEAD
               azureSubscription: 'Resource Manager - Tailspin - Space Game - staging'
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
     
-=======
-              azureSubscription: 'Resource Manager - Tailspin - Space Game'
-              appName: '$(WebAppNameStaging)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
->>>>>>> origin/release
