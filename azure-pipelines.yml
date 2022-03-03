@@ -16,8 +16,8 @@ schedules:
     branches:
       include:
       - release
-      exclude:
-        - release/*
+ #     exclude:
+ #       - release/*
     always: false  
 
 stages:
